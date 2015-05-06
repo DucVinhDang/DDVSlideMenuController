@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A36276431AFA0D03007C97E9 /* TopVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = A36276411AFA0D03007C97E9 /* TopVC.swift */; };
+		A36276441AFA0D03007C97E9 /* TopVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = A36276421AFA0D03007C97E9 /* TopVC.xib */; };
+		A36276471AFA114E007C97E9 /* BottomVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = A36276451AFA114E007C97E9 /* BottomVC.swift */; };
+		A36276481AFA114E007C97E9 /* BottomVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = A36276461AFA114E007C97E9 /* BottomVC.xib */; };
 		A3EF97E31AF7AED600A42F1B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3EF97E21AF7AED600A42F1B /* AppDelegate.swift */; };
 		A3EF97EA1AF7AED600A42F1B /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A3EF97E91AF7AED600A42F1B /* Images.xcassets */; };
 		A3EF97ED1AF7AED600A42F1B /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = A3EF97EB1AF7AED600A42F1B /* LaunchScreen.xib */; };
@@ -31,6 +35,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		A36276411AFA0D03007C97E9 /* TopVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TopVC.swift; sourceTree = "<group>"; };
+		A36276421AFA0D03007C97E9 /* TopVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TopVC.xib; sourceTree = "<group>"; };
+		A36276451AFA114E007C97E9 /* BottomVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BottomVC.swift; sourceTree = "<group>"; };
+		A36276461AFA114E007C97E9 /* BottomVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BottomVC.xib; sourceTree = "<group>"; };
 		A3EF97DD1AF7AED500A42F1B /* DDVSlideMenuControllerExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DDVSlideMenuControllerExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A3EF97E11AF7AED500A42F1B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A3EF97E21AF7AED600A42F1B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -131,6 +139,10 @@
 				A3EF980A1AF7AF3700A42F1B /* LeftVC.xib */,
 				A3EF980D1AF7AF4000A42F1B /* RightVC.swift */,
 				A3EF980E1AF7AF4000A42F1B /* RightVC.xib */,
+				A36276411AFA0D03007C97E9 /* TopVC.swift */,
+				A36276421AFA0D03007C97E9 /* TopVC.xib */,
+				A36276451AFA114E007C97E9 /* BottomVC.swift */,
+				A36276461AFA114E007C97E9 /* BottomVC.xib */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -215,7 +227,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A36276441AFA0D03007C97E9 /* TopVC.xib in Resources */,
 				A3EF98101AF7AF4000A42F1B /* RightVC.xib in Resources */,
+				A36276481AFA114E007C97E9 /* BottomVC.xib in Resources */,
 				A3EF98081AF7AF2600A42F1B /* CenterVC.xib in Resources */,
 				A3EF97ED1AF7AED600A42F1B /* LaunchScreen.xib in Resources */,
 				A3EF97EA1AF7AED600A42F1B /* Images.xcassets in Resources */,
@@ -240,7 +254,9 @@
 				A3EF98071AF7AF2600A42F1B /* CenterVC.swift in Sources */,
 				A3EF97E31AF7AED600A42F1B /* AppDelegate.swift in Sources */,
 				A3EF980F1AF7AF4000A42F1B /* RightVC.swift in Sources */,
+				A36276471AFA114E007C97E9 /* BottomVC.swift in Sources */,
 				A3EF98031AF7AF0B00A42F1B /* DDVSlideMenuController.swift in Sources */,
+				A36276431AFA0D03007C97E9 /* TopVC.swift in Sources */,
 				A3EF980B1AF7AF3700A42F1B /* LeftVC.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -431,6 +447,7 @@
 				A3EF97FE1AF7AED600A42F1B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		A3EF97FF1AF7AED600A42F1B /* Build configuration list for PBXNativeTarget "DDVSlideMenuControllerExampleTests" */ = {
 			isa = XCConfigurationList;
@@ -439,6 +456,7 @@
 				A3EF98011AF7AED600A42F1B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

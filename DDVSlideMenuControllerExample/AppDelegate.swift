@@ -23,6 +23,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         var leftVC = LeftVC(nibName: "LeftVC", bundle: nil)
         var rightVC = RightVC(nibName: "RightVC", bundle: nil)
         
+        var topVC = TopVC(nibName: "TopVC", bundle: nil)
+        var bottomVC = BottomVC(nibName: "BottomVC", bundle: nil)
+        
         centerVC.addLeftToggleButton(title: "Left")
         centerVC.addRightToggleButton(title: "Right")
         
@@ -32,6 +35,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         var ddvSlideMC = DDVSlideMenuController(centerViewController: centerNav, leftViewController: leftNav, rightViewController: rightNav)
         ddvSlideMC.delegate = centerVC
+        
+        ddvSlideMC.addTopViewController(topVC)
+        ddvSlideMC.addBottomViewController(bottomVC)
+        
         window?.rootViewController = ddvSlideMC
         window?.makeKeyAndVisible()
         return true

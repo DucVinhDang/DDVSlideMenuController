@@ -29,6 +29,16 @@ class CenterVC: UIViewController, DDVSlideMenuControllerDelegate {
         // Dispose of any resources that can be recreated.
     }
     
+    // MARK: - Button Actions
+    
+    @IBAction func toggleTopPanelAction(sender: AnyObject) {
+        ddvSlideMenuController()?.toggleTopPanel()
+    }
+    
+    @IBAction func toggleBottomPanelAction(sender: AnyObject) {
+        ddvSlideMenuController()?.toggleBottomPanel()
+    }
+    
     // MARK: - DDVSlideMenuController Delegate
     
     func DDVSlideMenuControllerWillShowLeftPanel() {

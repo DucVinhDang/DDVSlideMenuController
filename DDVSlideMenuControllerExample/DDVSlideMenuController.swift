@@ -27,12 +27,16 @@ class DDVSlideMenuController: UIViewController {
     enum SlidePanelState {
         case Left
         case Right
+        case Top
+        case Bottom
         case None
     }
     
     var centerViewController: UIViewController!
     var leftViewController: UIViewController?
     var rightViewController: UIViewController?
+    var topViewController: UIViewController?
+    var bottomViewController: UIViewController?
     
     let deviceWidth = UIScreen.mainScreen().bounds.width
     let deviceHeight = UIScreen.mainScreen().bounds.height
@@ -41,6 +45,7 @@ class DDVSlideMenuController: UIViewController {
     var delegate: DDVSlideMenuControllerDelegate?
     
     weak var panGesture: UIPanGestureRecognizer?
+    weak var panGestureForTop: UIPanGestureRecognizer?
     
     var distanceOffSet: CGFloat = 70
     var timeSliding: NSTimeInterval = 0.5
@@ -114,7 +119,21 @@ class DDVSlideMenuController: UIViewController {
         addChildPanelViewController(rightViewController!)
     }
     
-    func addChildPanelViewController(childVC: UIViewController) {
+    func addTopViewController(topVC: UIViewController) {
+        topViewController = topVC
+        topViewController?.view.frame = CGRectMake(0, -CGFloat(topViewController!.view.bounds.height)/2, CGFloat(topViewController!.view.bounds.width), CGFloat(topViewController!.view.bounds.height))
+        topViewController?.view.autoresizingMask = UIViewAutoresizing.FlexibleWidth | UIViewAutoresizing.FlexibleHeight
+        addChildPanelViewController(topViewController!)
+    }
+    
+    func addBottomViewController(topVC: UIViewController) {
+        bottomViewController = topVC
+        bottomViewController?.view.frame = CGRectMake(0, deviceHeight + CGFloat(bottomViewController!.view.bounds.height)/2, CGFloat(bottomViewController!.view.bounds.width), CGFloat(bottomViewController!.view.bounds.height))
+        bottomViewController?.view.autoresizingMask = UIViewAutoresizing.FlexibleWidth | UIViewAutoresizing.FlexibleHeight
+        addChildPanelViewController(bottomViewController!)
+    }
+    
+    private func addChildPanelViewController(childVC: UIViewController) {
         addChildViewController(childVC)
         view.insertSubview(childVC.view, atIndex: 0)
         childVC.didMoveToParentViewController(self)
@@ -122,7 +141,7 @@ class DDVSlideMenuController: UIViewController {
     
     // MARK: - UIGestureRecognizer Methods
     
-    func addPanGestureRecognizer() {
+    private func addPanGestureRecognizer() {
         var panG = UIPanGestureRecognizer(target: self, action: Selector("handlePanGesture:"))
         centerViewController.view.addGestureRecognizer(panG)
         panGesture = panG
@@ -170,36 +189,43 @@ class DDVSlideMenuController: UIViewController {
     
     // MARK: - Animation Panel Methods
     
-    func animatePanelAccordingToPositionOfCenterView(canSlide: Bool) {
+    private func animatePanelAccordingToPositionOfCenterView(canSlide: Bool) {
         if(canSlide) {
             if(slidePanelState == .Left) {
-                makeAnimationForView(animationView: centerViewController.view, toNewPositionX: deviceWidth + (deviceWidth/2 - distanceOffSet)) { finished in
+                makeAnimationForViewToNewPositionX(animationView: centerViewController.view, positionX: deviceWidth + (deviceWidth/2 - distanceOffSet)) { finished in
                     delegate?.DDVSlideMenuControllerDidShowLeftPanel?()
                 }
             } else if(slidePanelState == .Right) {
-                makeAnimationForView(animationView: centerViewController.view, toNewPositionX: distanceOffSet - (deviceWidth/2)) { finished in
+                makeAnimationForViewToNewPositionX(animationView: centerViewController.view, positionX: distanceOffSet - (deviceWidth/2)) { finished in
                     delegate?.DDVSlideMenuControllerDidShowRightPanel?()
                 }
             }
         } else {
-            hidePanel()
+            hidePanelAction()
         }
     }
     
-    func makeAnimationForView(#animationView: UIView, toNewPositionX posX: CGFloat, completion: ((Bool) -> Void)! = nil) {
+    private func makeAnimationForViewToNewPositionX(#animationView: UIView, positionX posX: CGFloat, completion: ((Bool) -> Void)! = nil) {
         UIView.animateWithDuration(timeSliding, delay: 0, usingSpringWithDamping: 0.8, initialSpringVelocity: 0, options: UIViewAnimationOptions.CurveEaseInOut, animations: {
             animationView.center.x = posX
             }, completion: completion
         )
     }
     
-    func hidePanel() {
+    private func makeAnimationForViewToNewPositionY(#animationView: UIView, positionY posY: CGFloat, completion: ((Bool) -> Void)! = nil) {
+        UIView.animateWithDuration(timeSliding, delay: 0, usingSpringWithDamping: 0.8, initialSpringVelocity: 0, options: UIViewAnimationOptions.CurveEaseInOut, animations: {
+            animationView.center.y = posY
+            }, completion: completion
+        )
+    }
+    
+    private func hidePanelAction() {
         if self.slidePanelState == .Left {
             delegate?.DDVSlideMenuControllerWillHideLeftPanel?()
         } else if self.slidePanelState == .Right {
             delegate?.DDVSlideMenuControllerWillHideRightPanel?()
         }
-        makeAnimationForView(animationView: centerViewController.view, toNewPositionX: deviceWidth/2) { finished in
+        makeAnimationForViewToNewPositionX(animationView: centerViewController.view, positionX: deviceWidth/2) { finished in
             if self.slidePanelState == .Left {
                 self.delegate?.DDVSlideMenuControllerDidHideLeftPanel?()
             } else if self.slidePanelState == .Right {
@@ -212,36 +238,77 @@ class DDVSlideMenuController: UIViewController {
     
     // MARK: - Toggle Methods
     
-    func toggleLeftPanelAction() {
+    private func toggleLeftPanelAction() {
+        if leftViewController == nil { return }
         if slidePanelState == .None {
             delegate?.DDVSlideMenuControllerWillShowLeftPanel?()
             slidePanelState = .Left
             view.sendSubviewToBack(self.rightViewController!.view)
-            makeAnimationForView(animationView: centerViewController.view, toNewPositionX: deviceWidth + (deviceWidth/2 - distanceOffSet)) { finished in
+            makeAnimationForViewToNewPositionX(animationView: centerViewController.view, positionX: deviceWidth + (deviceWidth/2 - distanceOffSet)) { finished in
                 delegate?.DDVSlideMenuControllerDidShowLeftPanel?()
             }
         } else {
-            hidePanel()
+            hidePanelAction()
         }
     }
     
-    func toggleRightPanelAction() {
+    private func toggleRightPanelAction() {
+        if rightViewController == nil { return }
         if slidePanelState == .None {
             delegate?.DDVSlideMenuControllerWillShowRightPanel?()
             slidePanelState = .Right
             view.sendSubviewToBack(self.leftViewController!.view)
-            makeAnimationForView(animationView: centerViewController.view, toNewPositionX: distanceOffSet - (deviceWidth/2)) { finished in
+            makeAnimationForViewToNewPositionX(animationView: centerViewController.view, positionX: distanceOffSet - (deviceWidth/2)) { finished in
                 delegate?.DDVSlideMenuControllerDidShowRightPanel?()
             }
         } else {
-            hidePanel()
+            hidePanelAction()
         }
+    }
+    
+    private func toggleTopPanelAction() {
+        if topViewController == nil { return }
+        if slidePanelState == .None {
+            slidePanelState = .Top
+            sendAllSubViewsToBackExcept(topViewController!.view)
+            makeAnimationForViewToNewPositionY(animationView: topViewController!.view, positionY: CGFloat(topViewController!.view.bounds.height)/2, completion: nil)
+            makeAnimationForViewToNewPositionY(animationView: centerViewController!.view, positionY: CGFloat(topViewController!.view.bounds.height) + CGFloat(centerViewController.view.bounds.height
+                )/2, completion: nil)
+        } else {
+            makeAnimationForViewToNewPositionY(animationView: topViewController!.view, positionY: -CGFloat(topViewController!.view.bounds.height)/2, completion: nil)
+            makeAnimationForViewToNewPositionY(animationView: centerViewController!.view, positionY: deviceHeight/2, completion: nil)
+            slidePanelState = .None
+        }
+    }
+    
+    private func toggleBottomPanelAction() {
+        if bottomViewController == nil { return }
+        if slidePanelState == .None {
+            slidePanelState = .Bottom
+            sendAllSubViewsToBackExcept(bottomViewController!.view)
+            makeAnimationForViewToNewPositionY(animationView: bottomViewController!.view, positionY: deviceHeight - CGFloat(bottomViewController!.view.bounds.height)/2, completion: nil)
+            makeAnimationForViewToNewPositionY(animationView: centerViewController!.view, positionY: deviceHeight - CGFloat(bottomViewController!.view.bounds.height) - CGFloat(centerViewController.view.bounds.height
+                )/2, completion: nil)
+        } else {
+            makeAnimationForViewToNewPositionY(animationView: bottomViewController!.view, positionY: deviceHeight + CGFloat(bottomViewController!.view.bounds.height)/2, completion: nil)
+            makeAnimationForViewToNewPositionY(animationView: centerViewController!.view, positionY: deviceHeight/2, completion: nil)
+            slidePanelState = .None
+        }
+
     }
     
     // MARK: Supporting Methods
     
-    func addShadowOpacityToView(myView: UIView) {
+    private func addShadowOpacityToView(myView: UIView) {
         myView.layer.shadowOpacity = shadowOpacity
+    }
+    
+    private func sendAllSubViewsToBackExcept(holdView: UIView) {
+        for subView in view.subviews {
+            if (subView as? UIView) != holdView && (subView as? UIView) != centerViewController.view {
+                view.sendSubviewToBack((subView as? UIView)!)
+            }
+        }
     }
  
     /*
@@ -287,5 +354,16 @@ extension UIViewController {
         ddvSlideMenuController()?.toggleRightPanelAction()
     }
     
+    func toggleTopPanel() {
+        ddvSlideMenuController()?.toggleTopPanelAction()
+    }
+    
+    func toggleBottomPanel() {
+        ddvSlideMenuController()?.toggleBottomPanelAction()
+    }
+    
+    func hidePanel() {
+        ddvSlideMenuController()?.hidePanelAction()
+    }
     
 }
