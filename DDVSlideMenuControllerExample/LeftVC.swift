@@ -8,7 +8,10 @@
 
 import UIKit
 
-class LeftVC: UIViewController {
+class LeftVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
+    
+    var array = ["Đặng Đức Vinh", "Lê Văn Định", "Nguyễn Vũ Tiến", "Đỗ Tiến Chí", "Đỗ Tiến Kiên", "Bùi Thị Nhung", "Đóng"]
+    var subArray = ["1","2","3","4","5","6", ""]
     
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
@@ -29,6 +32,26 @@ class LeftVC: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
+    // MARK: - UITableView DataSource
+    
+    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return array.count
+    }
+    
+    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        var cell = UITableViewCell(style: UITableViewCellStyle.Value1, reuseIdentifier: "Cell")
+        cell.textLabel?.text = array[indexPath.row]
+        cell.detailTextLabel?.text = subArray[indexPath.row]
+        return cell
+    }
+    
+    // MARK: - UITableView Delegate
+    
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        if indexPath.row == 6 {
+            ddvSlideMenuController()?.hidePanel()
+        }
+    }
 
     /*
     // MARK: - Navigation

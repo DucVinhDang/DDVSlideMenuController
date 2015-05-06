@@ -41,6 +41,7 @@ class CenterVC: UIViewController, DDVSlideMenuControllerDelegate {
     
     // MARK: - DDVSlideMenuController Delegate
     
+    // Left and right
     func DDVSlideMenuControllerWillShowLeftPanel() {
         println("Will show left panel")
     }
@@ -72,6 +73,44 @@ class CenterVC: UIViewController, DDVSlideMenuControllerDelegate {
     func DDVSlideMenuControllerDidHideRightPanel() {
         println("Did hide right panel")
     }
+    
+    
+    //Top and bottom
+    func DDVSlideMenuControllerWillShowTopPanel() {
+        println("Will show top panel")
+    }
+    
+    func DDVSlideMenuControllerWillShowBottomPanel() {
+        println("Will show bottom panel")
+    }
+    
+    func DDVSlideMenuControllerDidShowTopPanel() {
+        println("Did show top panel")
+    }
+    
+    func DDVSlideMenuControllerDidShowBottomPanel() {
+        println("Did show bottom panel")
+    }
+    
+    func DDVSlideMenuControllerWillHideTopPanel() {
+        println("Will hide top panel")
+    }
+    
+    func DDVSlideMenuControllerWillHideBottomPanel() {
+        println("Will hide bottom panel")
+    }
+    
+    func DDVSlideMenuControllerDidHideTopPanel() {
+        println("Did hide top panel")
+    }
+    
+    func DDVSlideMenuControllerDidHideBottomPanel() {
+        println("Did hide bottom panel")
+    }
+    
+    
+    
+    
 
     /*
     // MARK: - Navigation
