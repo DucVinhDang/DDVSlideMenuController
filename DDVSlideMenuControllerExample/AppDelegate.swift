@@ -16,6 +16,24 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
+        window = UIWindow(frame: UIScreen.mainScreen().bounds)
+        window?.backgroundColor = UIColor.whiteColor()
+        
+        var centerVC = CenterVC(nibName: "CenterVC", bundle: nil)
+        var leftVC = LeftVC(nibName: "LeftVC", bundle: nil)
+        var rightVC = RightVC(nibName: "RightVC", bundle: nil)
+        
+        centerVC.addLeftToggleButton(title: "Left")
+        centerVC.addRightToggleButton(title: "Right")
+        
+        var centerNav = UINavigationController(rootViewController: centerVC)
+        var leftNav = UINavigationController(rootViewController: leftVC)
+        var rightNav = UINavigationController(rootViewController: rightVC)
+        
+        var ddvSlideMC = DDVSlideMenuController(centerViewController: centerNav, leftViewController: leftNav, rightViewController: rightNav)
+        ddvSlideMC.delegate = centerVC
+        window?.rootViewController = ddvSlideMC
+        window?.makeKeyAndVisible()
         return true
     }
 
