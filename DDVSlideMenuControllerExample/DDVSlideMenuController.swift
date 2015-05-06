@@ -156,14 +156,14 @@ class DDVSlideMenuController: UIViewController {
                     delegate?.DDVSlideMenuControllerWillShowLeftPanel?()
                     slidePanelState = .Left
                     addShadowOpacityToView(centerViewController.view)
-                    view.sendSubviewToBack(self.rightViewController!.view)
+                    sendAllSubViewsToBackExcept(leftViewController!.view)
                 }
             } else {
                 if(slidePanelState == .None && rightViewController != nil) {
                     delegate?.DDVSlideMenuControllerWillShowRightPanel?()
                     slidePanelState = .Right
                     addShadowOpacityToView(centerViewController.view)
-                    view.sendSubviewToBack(self.leftViewController!.view)
+                    sendAllSubViewsToBackExcept(rightViewController!.view)
                 }
             }
         case .Changed:
