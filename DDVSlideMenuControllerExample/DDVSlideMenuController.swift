@@ -62,7 +62,7 @@ class DDVSlideMenuController: UIViewController {
     weak var panGesture: UIPanGestureRecognizer?
     weak var panGestureForTop: UIPanGestureRecognizer?
     
-    var distanceOffSet: CGFloat = 70
+    var distanceOffSet: CGFloat = 80
     var timeSliding: NSTimeInterval = 0.5
     var shadowOpacity: Float = 0.8
     
@@ -254,6 +254,7 @@ class DDVSlideMenuController: UIViewController {
     
     private func toggleLeftPanelAction() {
         if leftViewController == nil { return }
+        if slidePanelState == .Top || slidePanelState == .Bottom { return }
         if slidePanelState == .None {
             delegate?.DDVSlideMenuControllerWillShowLeftPanel?()
             slidePanelState = .Left
@@ -268,6 +269,7 @@ class DDVSlideMenuController: UIViewController {
     
     private func toggleRightPanelAction() {
         if rightViewController == nil { return }
+        if slidePanelState == .Top || slidePanelState == .Bottom { return }
         if slidePanelState == .None {
             delegate?.DDVSlideMenuControllerWillShowRightPanel?()
             slidePanelState = .Right
@@ -282,6 +284,7 @@ class DDVSlideMenuController: UIViewController {
     
     private func toggleTopPanelAction() {
         if topViewController == nil { return }
+        if slidePanelState == .Left || slidePanelState == .Right { return }
         if slidePanelState == .None {
             delegate?.DDVSlideMenuControllerWillShowTopPanel?()
             slidePanelState = .Top
@@ -303,6 +306,7 @@ class DDVSlideMenuController: UIViewController {
     
     private func toggleBottomPanelAction() {
         if bottomViewController == nil { return }
+        if slidePanelState == .Left || slidePanelState == .Right { return }
         if slidePanelState == .None {
             delegate?.DDVSlideMenuControllerWillShowBottomPanel?()
             slidePanelState = .Bottom
