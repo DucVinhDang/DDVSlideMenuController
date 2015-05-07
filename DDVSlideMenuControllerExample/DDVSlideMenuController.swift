@@ -48,23 +48,21 @@ class DDVSlideMenuController: UIViewController {
     }
     
     var centerViewController: UIViewController!
-    var leftViewController: UIViewController?
-    var rightViewController: UIViewController?
-    var topViewController: UIViewController?
-    var bottomViewController: UIViewController?
-    
-    let deviceWidth = UIScreen.mainScreen().bounds.width
-    let deviceHeight = UIScreen.mainScreen().bounds.height
+    weak var leftViewController: UIViewController?
+    weak var rightViewController: UIViewController?
+    weak var topViewController: UIViewController?
+    weak var bottomViewController: UIViewController?
     
     var slidePanelState: SlidePanelState = .None
     var delegate: DDVSlideMenuControllerDelegate?
     
     weak var panGesture: UIPanGestureRecognizer?
-    weak var panGestureForTop: UIPanGestureRecognizer?
     
-    var distanceOffSet: CGFloat = 80
-    var timeSliding: NSTimeInterval = 0.5
-    var shadowOpacity: Float = 0.8
+    let deviceWidth = UIScreen.mainScreen().bounds.width
+    let deviceHeight = UIScreen.mainScreen().bounds.height
+    let distanceOffSet: CGFloat = 80
+    let timeSliding: NSTimeInterval = 0.7
+    let shadowOpacity: Float = 0.8
     
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
@@ -99,7 +97,6 @@ class DDVSlideMenuController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
         // Do any additional setup after loading the view.
     }
 
@@ -137,14 +134,14 @@ class DDVSlideMenuController: UIViewController {
     
     func addTopViewController(topVC: UIViewController) {
         topViewController = topVC
-        topViewController?.view.frame = CGRectMake(0, -CGFloat(topViewController!.view.bounds.height), CGFloat(topViewController!.view.bounds.width), CGFloat(topViewController!.view.bounds.height))
+        topViewController?.view.frame = CGRectMake(0, -CGFloat(topViewController!.view.bounds.height)/6, deviceWidth, CGFloat(topViewController!.view.bounds.height))
         topViewController?.view.autoresizingMask = UIViewAutoresizing.FlexibleWidth | UIViewAutoresizing.FlexibleHeight
         addChildPanelViewController(topViewController!)
     }
     
     func addBottomViewController(topVC: UIViewController) {
         bottomViewController = topVC
-        bottomViewController?.view.frame = CGRectMake(0, deviceHeight + CGFloat(bottomViewController!.view.bounds.height)/2, CGFloat(bottomViewController!.view.bounds.width), CGFloat(bottomViewController!.view.bounds.height))
+        bottomViewController?.view.frame = CGRectMake(0, deviceHeight + CGFloat(bottomViewController!.view.bounds.height)/2, deviceWidth, CGFloat(bottomViewController!.view.bounds.height))
         bottomViewController?.view.autoresizingMask = UIViewAutoresizing.FlexibleWidth | UIViewAutoresizing.FlexibleHeight
         addChildPanelViewController(bottomViewController!)
     }
@@ -258,7 +255,7 @@ class DDVSlideMenuController: UIViewController {
         if slidePanelState == .None {
             delegate?.DDVSlideMenuControllerWillShowLeftPanel?()
             slidePanelState = .Left
-            view.sendSubviewToBack(self.rightViewController!.view)
+            sendAllSubViewsToBackExcept(leftViewController!.view)
             makeAnimationForViewToNewPositionX(animationView: centerViewController.view, positionX: deviceWidth + (deviceWidth/2 - distanceOffSet)) { finished in
                 delegate?.DDVSlideMenuControllerDidShowLeftPanel?()
             }
@@ -273,7 +270,7 @@ class DDVSlideMenuController: UIViewController {
         if slidePanelState == .None {
             delegate?.DDVSlideMenuControllerWillShowRightPanel?()
             slidePanelState = .Right
-            view.sendSubviewToBack(self.leftViewController!.view)
+            sendAllSubViewsToBackExcept(rightViewController!.view)
             makeAnimationForViewToNewPositionX(animationView: centerViewController.view, positionX: distanceOffSet - (deviceWidth/2)) { finished in
                 delegate?.DDVSlideMenuControllerDidShowRightPanel?()
             }
@@ -296,8 +293,8 @@ class DDVSlideMenuController: UIViewController {
                 )/2, completion: nil)
         } else {
             delegate?.DDVSlideMenuControllerWillHideTopPanel?()
-            makeAnimationForViewToNewPositionY(animationView: topViewController!.view, positionY: -CGFloat(topViewController!.view.bounds.height)/2, completion: { finished in
-                delegate?.DDVSlideMenuControllerDidHideTopPanel?()
+            makeAnimationForViewToNewPositionY(animationView: topViewController!.view, positionY: -CGFloat(topViewController!.view.bounds.height)/6 + CGFloat(topViewController!.view.bounds.height)/2, completion: { finished in
+                self.delegate?.DDVSlideMenuControllerDidHideTopPanel?()
             })
             makeAnimationForViewToNewPositionY(animationView: centerViewController!.view, positionY: deviceHeight/2, completion: nil)
             slidePanelState = .None
@@ -334,11 +331,7 @@ class DDVSlideMenuController: UIViewController {
     }
     
     private func sendAllSubViewsToBackExcept(holdView: UIView) {
-        for subView in view.subviews {
-            if (subView as? UIView) != holdView && (subView as? UIView) != centerViewController.view {
-                view.sendSubviewToBack((subView as? UIView)!)
-            }
-        }
+        view.bringSubviewToFront(holdView)
         view.bringSubviewToFront(centerViewController!.view)
     }
  

@@ -13,7 +13,23 @@
         <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
             <rect key="frame" x="0.0" y="0.0" width="600" height="285"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="Hws-KP-T0l">
+                    <rect key="frame" x="0.0" y="0.0" width="600" height="285"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <connections>
+                        <outlet property="dataSource" destination="-1" id="Sbb-bW-qZE"/>
+                        <outlet property="delegate" destination="-1" id="VCU-LL-EgU"/>
+                    </connections>
+                </tableView>
+            </subviews>
             <color key="backgroundColor" red="0.98436667903630537" green="0.25567707243521254" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+            <constraints>
+                <constraint firstAttribute="trailing" secondItem="Hws-KP-T0l" secondAttribute="trailing" id="2l5-Fb-nRx"/>
+                <constraint firstAttribute="bottom" secondItem="Hws-KP-T0l" secondAttribute="bottom" id="4OA-XB-Mc5"/>
+                <constraint firstItem="Hws-KP-T0l" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="IYe-gK-g6z"/>
+                <constraint firstItem="Hws-KP-T0l" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="bkp-9q-9me"/>
+            </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <point key="canvasLocation" x="413" y="145.5"/>
         </view>
