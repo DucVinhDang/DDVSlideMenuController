@@ -61,7 +61,7 @@ class DDVSlideMenuController: UIViewController {
     let deviceWidth = UIScreen.mainScreen().bounds.width
     let deviceHeight = UIScreen.mainScreen().bounds.height
     let distanceOffSet: CGFloat = 80
-    let timeSliding: NSTimeInterval = 0.7
+    let timeSliding: NSTimeInterval = 0.5
     let shadowOpacity: Float = 0.8
     
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
@@ -178,13 +178,24 @@ class DDVSlideMenuController: UIViewController {
                 }
             }
         case .Changed:
-            if(slidePanelState == .Left && CGRectGetMinX(centerViewController.view.frame) <= (deviceWidth - distanceOffSet)) {
+            if(slidePanelState == .Left) {
+                if CGRectGetMinX(centerViewController.view.frame) > (deviceWidth - distanceOffSet) {
+                    centerViewController.view.frame.origin.x = (deviceWidth - distanceOffSet)
+                } else if CGRectGetMinX(centerViewController.view.frame) < 0 {
+                    centerViewController.view.frame.origin.x = 0
+                }
                 centerViewController.view.center.x = centerViewController.view.center.x + gesture.translationInView(view).x
-            } else if(slidePanelState == .Right && CGRectGetMaxX(centerViewController.view.frame) >= distanceOffSet) {
+                gesture.setTranslation(CGPointZero, inView: view)
+            } else if(slidePanelState == .Right) {
+                if CGRectGetMaxX(centerViewController.view.frame) < distanceOffSet {
+                    centerViewController.view.frame.origin.x = distanceOffSet - centerViewController.view.bounds.width
+                } else if CGRectGetMinX(centerViewController.view.frame) > 0 {
+                    centerViewController.view.frame.origin.x = 0
+                }
                 centerViewController.view.center.x = centerViewController.view.center.x + gesture.translationInView(view).x
+                gesture.setTranslation(CGPointZero, inView: view)
             }
-            gesture.setTranslation(CGPointZero, inView: view)
-        
+
         case .Ended:
             if(slidePanelState == .Left) {
                 var isGreaterThanScreen = centerViewController.view.center.x > deviceWidth
