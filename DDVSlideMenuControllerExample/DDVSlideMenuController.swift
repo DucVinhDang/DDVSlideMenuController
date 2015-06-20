@@ -47,14 +47,14 @@ class DDVSlideMenuController: UIViewController {
         case None
     }
     
-    var centerViewController: UIViewController!
+    weak var centerViewController: UIViewController!
     weak var leftViewController: UIViewController?
     weak var rightViewController: UIViewController?
     weak var topViewController: UIViewController?
     weak var bottomViewController: UIViewController?
     
     var slidePanelState: SlidePanelState = .None
-    var delegate: DDVSlideMenuControllerDelegate?
+    weak var delegate: DDVSlideMenuControllerDelegate?
     
     weak var panGesture: UIPanGestureRecognizer?
     
