@@ -164,17 +164,19 @@ class DDVSlideMenuController: UIViewController {
         var getVeclocity = gesture.velocityInView(view).x > 0
         switch(gesture.state) {
         case .Began:
-            if(getVeclocity) {
-                if(slidePanelState == .None && leftViewController != nil) {
-                    delegate?.DDVSlideMenuControllerWillShowLeftPanel?()
-                    slidePanelState = .Left
-                    sendAllSubViewsToBackExcept(leftViewController!.view)
-                }
-            } else {
-                if(slidePanelState == .None && rightViewController != nil) {
-                    delegate?.DDVSlideMenuControllerWillShowRightPanel?()
-                    slidePanelState = .Right
-                    sendAllSubViewsToBackExcept(rightViewController!.view)
+            if slidePanelState == .None {
+                if(getVeclocity) {
+                    if leftViewController != nil {
+                        delegate?.DDVSlideMenuControllerWillShowLeftPanel?()
+                        slidePanelState = .Left
+                        sendAllSubViewsToBackExcept(leftViewController!.view)
+                    }
+                } else {
+                    if rightViewController != nil {
+                        delegate?.DDVSlideMenuControllerWillShowRightPanel?()
+                        slidePanelState = .Right
+                        sendAllSubViewsToBackExcept(rightViewController!.view)
+                    }
                 }
             }
         case .Changed:
